@@ -21,7 +21,13 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'Hello from the backend!' });
 });
 
-if (ENV.NODE_ENV === 'production' && existsSync(adminDistPath)) {
+// Static files are served by Vercel CDN (outputDirectory: admin/dist).
+// In non-Vercel production (e.g. Railway, local), serve admin/dist from Express.
+if (
+  ENV.NODE_ENV === 'production' &&
+  !process.env.VERCEL &&
+  existsSync(adminDistPath)
+) {
   app.use(express.static(adminDistPath));
 
   app.get(/^(?!\/api(?:\/|$)).*/, (req, res) => {
