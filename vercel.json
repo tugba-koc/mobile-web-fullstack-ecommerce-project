@@ -1,0 +1,19 @@
+{
+        "installCommand": "npm install --prefix backend && npm install --prefix admin --include=dev",
+        "buildCommand": "npm run build",
+        "functions": {
+                "api/index.mjs": {
+                        "includeFiles": "admin/dist/**"
+                }
+        },
+        "rewrites": [
+                {
+                        "source": "/api/(.*)",
+                        "destination": "/api/index"
+                },
+                {
+                        "source": "/(.*)",
+                        "destination": "/api/index"
+                }
+        ]
+}
